@@ -196,8 +196,7 @@ public class Server {
 					
 					System.out.println("2");	
 					for (Client_SInfo c : list) {
-						if (c.UDP_PORT == Remove_client_UDP_Port) {
-							
+						if (c.UDP_PORT == Remove_client_UDP_Port) {		
 							list.remove(c);
 							System.out.println("Remove Client : "+Remove_Client_IP);
 							break;
