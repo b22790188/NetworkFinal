@@ -188,24 +188,18 @@ public class Server {
 				 * The one who has same port number in list with client that sends
 				 * DisconnectRequest, it's the client we want to remove.
 				 */
-				synchronized(list){
-					System.out.println("1");
-					
+				synchronized(list){					
 					String Remove_Client_IP = d_packet.getAddress().getHostAddress();
 					int Remove_client_UDP_Port = d_packet.getPort();
 					
-					System.out.println("2");	
 					for (Client_SInfo c : list) {
 						if (c.UDP_PORT == Remove_client_UDP_Port) {		
 							list.remove(c);
 							System.out.println("Remove Client : "+Remove_Client_IP);
 							break;
 						}
-						System.out.println("3");
 					}
-					System.out.println("4");
 				}
-				System.out.println("5");
 				
 				/*
 				 * TBD : parse message from d_packet, remove connection from client, and send

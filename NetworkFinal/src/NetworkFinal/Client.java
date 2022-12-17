@@ -58,7 +58,7 @@ public class Client {
 			ioe.printStackTrace();
 		}
 
-		/*
+		/**
 		 * After we've send Client side UDP socket info to Server, and also get info of
 		 * Server side UDP socket, we can close TCP socket in Client side. Because it is
 		 * of no usage.
@@ -76,7 +76,7 @@ public class Client {
 
 	private class UDPThread implements Runnable {
 		
-		/*
+		/**
 		 * Create UDP socket
 		 */
 		UDPThread() {
@@ -93,7 +93,7 @@ public class Client {
 		public void run() {
 			byte[] buf = new byte[BUFSIZE];
 			
-			/*
+			/**
 			 * Receive packet from server and parse message
 			 */
 			while (ds != null) {
@@ -102,13 +102,27 @@ public class Client {
 					ds.receive(d_packet);
 
 					// still need to parse message here
-				} catch (IOException ioe) {
+				} 
+				
+				/*
+				 * When socket is closed after sending disconnect request,
+				 * ds.receive() will throw SocketException, and how I deal with it here is
+				 * by break to leave out this infinite loop to make thread end properly.
+				 */
+				catch(SocketException soe) {
+					break;
+				}
+				catch (IOException ioe) {
 					ioe.printStackTrace();
 				}
 			}
 		}
 	}
-
+	
+	/**
+	 * sendDisconnectRequest() will send client UDP port to server,
+	 * and then server will end the connection.
+	 */
 	public void sendDisconnectRequest() {
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(BUFSIZE);
@@ -135,7 +149,8 @@ public class Client {
 		buf = baos.toByteArray();
 		
 		try {
-			DatagramPacket d_packet = new DatagramPacket(buf,buf.length,new InetSocketAddress(serverIP,Disconnect_Port));
+			DatagramPacket d_packet = new DatagramPacket(buf,buf.length,
+					new InetSocketAddress(serverIP,Disconnect_Port));
 			ds.send(d_packet);
 		}
 		catch(IOException ioe) {
@@ -145,6 +160,9 @@ public class Client {
 			try {
 				if(baos != null) {
 					baos.close();
+				}
+				if(ds != null) {
+					ds.close();
 				}
 			}
 			catch(IOException ioe) {
