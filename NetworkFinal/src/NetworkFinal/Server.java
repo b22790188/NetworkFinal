@@ -18,7 +18,7 @@ public class Server {
 
 	public static void main(String[] args) {
 		Server server = new Server();
-
+		System.out.println("test");
 	}
 
 	private Server() {
@@ -206,7 +206,6 @@ public class Server {
 				 * removing message back to each client online.
 				 */
 			}
-
 		}
 	}
 
@@ -219,5 +218,4 @@ public class Server {
 			this.UDP_PORT = UDP_PORT;
 		}
 	}
-
 }
