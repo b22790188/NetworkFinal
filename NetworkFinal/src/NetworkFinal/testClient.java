@@ -7,7 +7,7 @@ import java.io.*;
 public class testClient {
 				
 	public static void main(String[] args) {
-		Client c = new Client();
+		NetClient c = new NetClient();
 		c.sendDisconnectRequest();
 	}
 }

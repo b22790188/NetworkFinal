@@ -3,7 +3,7 @@ package NetworkFinal;
 import java.io.*;
 import java.net.*;
 
-public class Client {
+public class NetClient {
 	
 	/**
 	 * @param Server_TCP_PORT is a Server's TCP port that is a fixed number.
@@ -23,10 +23,10 @@ public class Client {
 	private DatagramSocket ds = null;
 
 	public static void main(String[] args) {
-		Client c = new Client();
+		NetClient c = new NetClient();
 	}
 
-	public Client() {
+	public NetClient() {
 
 		Socket s = null;
 		try {
