@@ -1,0 +1,5 @@
+package Msg;
+
+public class New_Bullet_Msg implements Msg{
+	
+}

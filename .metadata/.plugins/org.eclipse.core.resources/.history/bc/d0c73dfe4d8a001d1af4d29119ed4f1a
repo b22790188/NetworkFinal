@@ -1,0 +1,22 @@
+package Msg;
+
+import character.GameFrame;
+
+public class Player_Move_Msg implements Msg{
+	
+	private int msgType = Msg.PLAYER_MOVE_MSG;
+	private int x, y;
+	private GameFrame client;
+	private int id;
+	
+	public Player_Move_Msg(GameFrame client){
+		this.client = client;
+	}
+	
+	public Player_Move_Msg(int id, int x, int y){
+		this.id = id;
+		this.x = x;
+		this.y = y;
+	}
+	
+}

@@ -3,7 +3,7 @@ package Net;
 import java.io.*;
 import java.net.*;
 import character.GameFrame;
-import Msg.Msg;
+import Msg.*;
 
 public class NetClient {
 	
@@ -61,6 +61,13 @@ public class NetClient {
 			client.getStickMan().setID(stickManID);
 
 			new Thread(UDP_thread).start();
+			
+			/*
+			 * 連線成功後，因為Gameframe中已經創建了stickman，所以需要發送newStickman訊息
+			 */
+			New_Stickman_Msg msg = new New_Stickman_Msg(client.getStickMan());
+			send(msg);
+			
 
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
@@ -108,7 +115,10 @@ public class NetClient {
 				try {
 					DatagramPacket d_packet = new DatagramPacket(buf, buf.length);
 					ds.receive(d_packet);
+					
+					System.out.println("Starting parse message"); //test
 					parse(d_packet);
+					
 					// still need to parse message here
 				} 
 				
@@ -126,6 +136,7 @@ public class NetClient {
 			}
 				
 		}
+		
 		/*
 		 * parse message by switch case block
 		 */
@@ -134,25 +145,35 @@ public class NetClient {
 			DataInputStream  dis = new DataInputStream(bais);
 			int msgType = 0;
 			
+			//read msgType first
 			try {
 				msgType = dis.readInt();
+				
+				System.out.println(msgType); //test
 			}
 			catch(IOException ioe) {
 				ioe.printStackTrace();
 			}
 			
 			Msg msg = null;
+			
 			switch(msgType) {
-				case msg.PLAYER_MOVE_MSG:
-					msg = new PLAYER_MOVE_MSG(client);
+				case Msg.STICKMAN_MOVE_MSG:
+					msg = new Stickman_Move_Msg(client);
 					msg.parse(dis);
 					break;
-				case msg.BULLET_MSG:
-					msg = new BULLET_MSG(client);
+				case Msg.NEW_STICKMAN_MSG:
+					
+					msg = new New_Stickman_Msg(client);
 					msg.parse(dis);
+					
+					System.out.println(msg); //test
 					break;
 			}
 		}
+	}
+	public void send(Msg msg) {
+		msg.send(ds, serverIP, My_UDP_Port);
 	}
 	
 	

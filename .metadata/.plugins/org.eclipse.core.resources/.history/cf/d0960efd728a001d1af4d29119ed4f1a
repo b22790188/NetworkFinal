@@ -1,0 +1,5 @@
+package Msg;
+
+public class BulletMsg implements Msg{
+	
+}
