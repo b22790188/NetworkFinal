@@ -1,0 +1,10 @@
+package Net;
+
+import Net.Msg;
+
+public class PlayerMsg implements Msg{
+	
+	private int msgType = Msg.PLAYER_MSG;
+	private int x, y;
+	
+}

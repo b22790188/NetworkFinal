@@ -1,0 +1,130 @@
+package NetworkFinal;
+
+import java.util.*;
+import java.io.*;
+import java.net.*;
+
+public class Server {
+	/**
+	 * @param SERVICE_PORT is specified to UDP port which serivce is bound.
+	 * @param BUFFER_SIZE is specified to MAX size of packet.
+	 * @param list is used to record client online.
+	 * @s is temporarily used to record client socket.
+	 */
+	private static final int TCP_PORT = 10000;
+	private static final int UDP_PORT = 10001;
+ 	private static final int BUFFSIZE = 4096;
+ 	private List<Client_SInfo> list = new ArrayList<Client_SInfo>();
+// 	private Hashtable<String,Integer> ht = new Hashtable<String,Integer>();
+	
+	Socket s;
+	
+	public Server() {
+		try {
+			ServerSocket ss = new ServerSocket(TCP_PORT);
+			System.out.println("Server is created , waiting for connection...");
+			
+			while(true) {
+				s = ss.accept();
+				System.out.println("connected from client "+s.getInetAddress().getHostAddress());
+				
+				UDPThread th = new UDPThread();
+				th.start();
+				System.out.println("Create UDP socket for this Client");
+				
+				/*
+				 * @param instream is used to receive Client UDP socket's info to Server side
+				 * @param outstream is used to send Server side UDP socket's info to Client side
+				 */
+				DataInputStream instream = new DataInputStream(s.getInputStream());
+				DataOutputStream outstream = new DataOutputStream(s.getOutputStream());
+				
+				String Client_IP = (String)(instream.readUTF());
+				int Client_UDP_Port = instream.readInt();
+				Client_SInfo client = new Client_SInfo(Client_IP, Client_UDP_Port);
+				list.add(client);
+				
+				outstream.writeUTF(InetAddress.getLocalHost().getHostAddress());
+				outstream.writeInt(th.UDP_Port);
+
+				System.out.println(list);
+			}
+		}
+		catch(IOException ioe) {
+			System.err.println("Error occurs opening socket...");
+			ioe.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Server server = new Server();
+		
+	}
+	
+	private class UDPThread extends Thread implements Runnable{
+		DatagramSocket ds;
+		int UDP_Port;
+		
+		public UDPThread() {
+			try {
+				/*
+				 * When object is created, create a UDP socket for transmission,
+				 * set UDP_Port for the object, and then we can return these to Client.
+				 */
+				this.ds = new DatagramSocket();
+				this.UDP_Port = ds.getLocalPort();
+				System.out.println(UDP_Port);
+			}
+			catch(IOException ioe){
+				ioe.printStackTrace();
+			}
+		/*
+		 * Setter and Getter
+		 */
+		}
+		
+		@Override
+		public void run() {
+			byte[] buf = new byte[BUFFSIZE];
+			
+			while(ds != null) {
+				DatagramPacket d_packet = new DatagramPacket(buf,buf.length);
+				
+				synchronized(list){					
+					try {
+						ds.receive(d_packet);
+						/*
+						 * str below is used to test;
+						 */
+						String str = new String(d_packet.getData(),0,d_packet.getLength());
+						System.out.println(str);
+						
+						for(Client_SInfo c : list) {
+							d_packet.setSocketAddress(new InetSocketAddress(c.ip,c.UDP_PORT));
+							ds.send(d_packet);
+						}
+						
+					}
+					catch(IOException ioe) {
+						ioe.printStackTrace();
+					}
+				}
+				System.out.println("out");
+			}
+		}
+	}
+	
+	private class Client_SInfo{
+		String ip;
+		int UDP_PORT;
+		
+		Client_SInfo(String ip,int UDP_PORT){
+			this.ip = ip;
+			this.UDP_PORT = UDP_PORT;
+		}
+	}
+}
+
+
+

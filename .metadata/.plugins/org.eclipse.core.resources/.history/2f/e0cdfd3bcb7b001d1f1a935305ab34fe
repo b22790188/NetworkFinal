@@ -1,0 +1,30 @@
+package NetworkFinal;
+
+import java.util.*;
+import java.net.*;
+import java.io.*;
+
+public class testClient {
+	private static int UDP_PORT = 55555;
+	
+	public static void main(String[] args) {
+		try {
+			Socket s = new Socket("localhost",10000);
+			DatagramSocket UDPSocket = new DatagramSocket(55555);
+			
+			DataInputStream instream = new DataInputStream(s.getInputStream());
+			DataOutputStream outstream = new DataOutputStream(s.getOutputStream());
+			outstream.writeUTF(InetAddress.getLocalHost().getHostAddress());
+			outstream.writeInt(UDP_PORT);
+			
+			System.out.println(instream.readUTF());
+			System.out.println(instream.readInt());
+			
+			s.close();
+			UDPSocket.close();
+		}
+		catch(IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+}
