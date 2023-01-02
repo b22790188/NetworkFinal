@@ -7492,3 +7492,8 @@ org.eclipse.jface.resource.DataFormatException: For input string: "1x"
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:596)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1467)
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1440)
+
+!ENTRY org.eclipse.ui.workbench 4 2 2023-01-03 01:18:03.575
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.ui.workbench".
+!STACK 0
+!FORCED BY TEST: this entry is intentional:The workbench should handle hostile pulldown delegates.

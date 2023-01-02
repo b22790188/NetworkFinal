@@ -41,8 +41,8 @@ public class Stickman_Move_Msg implements Msg{
 		try {
 			dos.writeInt(msgType);
 			dos.writeInt(id);
-			dos.write(x);
-			dos.write(y);
+			dos.writeInt(x);
+			dos.writeInt(y);
 		}
 		catch(IOException ioe) {
 			ioe.printStackTrace();
@@ -65,9 +65,13 @@ public class Stickman_Move_Msg implements Msg{
 		try {
 			
 			/*
-			 * 當訊息內的ID符合某一個stickmanID時，代表那個stickman需要被更新座標，包含自己。
+			 * 當訊息內的ID符合某一個stickmanID時，代表那個stickman需要被更新座標，遇到自己就reutrn。
 			 */
 			int id = dis.readInt();
+			if(id == this.client.getStickMan().getID()) {
+				return;
+			}
+			
 			int update_x = dis.readInt();
 			int update_y = dis.readInt();
 			
@@ -78,6 +82,8 @@ public class Stickman_Move_Msg implements Msg{
 					break;
 				}
 			}			
+			
+			System.out.println("Msg Parse Successfuly");
 		}
 		catch(IOException ioe) {
 			ioe.printStackTrace();

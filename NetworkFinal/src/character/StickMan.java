@@ -4,9 +4,12 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.IOException;
 import javax.swing.ImageIcon;
+
+import Msg.*;
 import map.Map;
 
 public class StickMan implements Runnable {
+	
 	private int id; //added by guo
 	
 	public static final int WIDTH = 32;
@@ -91,11 +94,19 @@ public class StickMan implements Runnable {
 			if (this.left) {
 				if (this.hit("left")) {
 					this.speedX = 0;
+					
 				}
 
 				if (this.x >= 0) {
 					this.x -= this.speedX;
+					
 				}
+				
+				/*
+				 * below added by guo
+					Stickman_Move_Msg msg = new Stickman_Move_Msg(this.id,this.x,this.y);
+					gf.getNetClient().send(msg);
+				 */
 
 				this.speedX = 3;
 			}
@@ -103,11 +114,18 @@ public class StickMan implements Runnable {
 			if (this.right) {
 				if (this.hit("right")) {
 					this.speedX = 0;
+
 				}
 
 				if (this.x + 32 <= 1024) {
 					this.x += this.speedX;
+					
 				}
+				/*
+				 * below added by guo
+					Stickman_Move_Msg msg = new Stickman_Move_Msg(id,this.x,this.y);
+					gf.getNetClient().send(msg);
+				 */
 
 				this.speedX = 3;
 			}
@@ -116,6 +134,12 @@ public class StickMan implements Runnable {
 				(new Thread() {
 					public void run() {
 						StickMan.this.jump();
+						
+						/*
+						 * below added by guo
+						Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y);
+						gf.getNetClient().send(msg);
+						 */
 					}
 				}).start();
 			}
@@ -176,14 +200,21 @@ public class StickMan implements Runnable {
 
 		return false;
 	}
-
+	
 	public void gravity() {
 		(new Thread() {
 			public void run() {
 				while(true) {
-					if (!StickMan.this.jumping && !StickMan.this.hit("down")) {
-						StickMan var10000 = StickMan.this;
-						var10000.y += StickMan.this.speedY;
+					if (!jumping && !hit("down")) {
+						y += StickMan.this.speedY;
+						
+						/*
+						 * 
+						  below added by guo
+						System.out.println(x+" "+y);
+						Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y);
+						gf.getNetClient().send(msg);
+						 */
 					}
 
 					try {
@@ -195,6 +226,7 @@ public class StickMan implements Runnable {
 			}
 		}).start();
 	}
+	
 	
 	/*
 	 * code below added by guo
