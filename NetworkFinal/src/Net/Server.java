@@ -117,6 +117,7 @@ public class Server {
 				 * for the object, and then we can return port number to Client.
 				 */
 				this.ds = new DatagramSocket();
+				
 				System.out.println(ds.getLocalPort());
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
@@ -126,7 +127,8 @@ public class Server {
 		@Override
 		public void run() {
 			byte[] buf = new byte[BUFSIZE];
-
+			
+			System.out.println("ds"+this.ds);// test
 			while (ds != null) {
 				DatagramPacket d_packet = new DatagramPacket(buf, buf.length);
 
@@ -137,7 +139,9 @@ public class Server {
 				 * synchronized block.
 				 */
 				try {
-					ds.receive(d_packet);
+					ds.receive(d_packet); 
+					System.out.println("packet received!");
+					
 				} catch (IOException ioe) {
 					ioe.printStackTrace();
 				}
@@ -149,10 +153,12 @@ public class Server {
 						 */
 						String str = new String(d_packet.getData(), 0, d_packet.getLength());
 						System.out.println(str);
-
+						
 						for (Client_SInfo c : list) {
 							d_packet.setSocketAddress(new InetSocketAddress(c.ip, c.UDP_PORT));
 							ds.send(d_packet);
+							
+							System.out.println("packet send!");//test
 						}
 
 					} catch (IOException ioe) {

@@ -205,4 +205,7 @@ public class StickMan implements Runnable {
 	public int getID() {
 		return this.id;
 	}
+	public StickMan getStickManObject() {
+		return this;
+	}
 }

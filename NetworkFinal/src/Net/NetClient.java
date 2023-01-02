@@ -59,7 +59,9 @@ public class NetClient {
 			Server_UDP_Port = instream.readInt();
 			int stickManID = instream.readInt();
 			client.getStickMan().setID(stickManID);
-
+			System.out.println("Server_UDP_Port"+Server_UDP_Port);//test
+			
+			
 			new Thread(UDP_thread).start();
 			
 			/*
@@ -173,7 +175,7 @@ public class NetClient {
 		}
 	}
 	public void send(Msg msg) {
-		msg.send(ds, serverIP, My_UDP_Port);
+		msg.send(ds, serverIP, Server_UDP_Port);
 	}
 	
 	

@@ -62,7 +62,13 @@ public class GameFrame extends JFrame {
 	public void paint(Graphics g) {
 		BufferedImage bi = (BufferedImage)this.createImage(1024, 576);
 		Graphics big = bi.getGraphics();
-		big.drawImage(this.stickMan.getStickMan(), this.stickMan.getStickManX(), this.stickMan.getStickManY(), 32, 32, (ImageObserver)null);
+		
+		for(StickMan s: StickManSet) {	
+			big.drawImage(s.getStickMan(), s.getStickManX(), s.getStickManY(), 32, 32, (ImageObserver)null);
+			System.out.println("x : "+s.getStickManX()+"y : "+s.getStickManY());
+		}
+
+//		big.drawImage(this.stickMan.getStickMan(), this.stickMan.getStickManX(), this.stickMan.getStickManY(), 32, 32, (ImageObserver)null);
 		controller.drawBullets(big);
 		this.map.drawMap(big);
 		g.drawImage(bi, 0, 0, (ImageObserver)null);
