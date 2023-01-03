@@ -144,12 +144,13 @@ public class StickMan implements Runnable {
 			
 			
 			
+//			System.out.println(":D");
 			
-			try {
-				Thread.sleep(15);
-			} catch (InterruptedException var2) {
-				var2.printStackTrace();
-			}
+//			try {
+//				Thread.sleep(15);
+//			} catch (InterruptedException var2) {
+//				var2.printStackTrace();
+//			}
 		}
 	}
 
@@ -169,7 +170,7 @@ public class StickMan implements Runnable {
 			gf.getNetClient().send(msg);
 
 			try {
-				Thread.sleep(7L);
+				Thread.sleep(30L);
 			} catch (InterruptedException var3) {
 				var3.printStackTrace();
 			}

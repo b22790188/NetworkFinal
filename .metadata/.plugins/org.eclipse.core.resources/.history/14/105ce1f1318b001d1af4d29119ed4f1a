@@ -138,15 +138,14 @@ public class StickMan implements Runnable {
 						/*
 						 * below added by guo
 						 */
+						Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y);
+						gf.getNetClient().send(msg);
 					}
 				}).start();
 			}
-			
-			
-			
-			
+
 			try {
-				Thread.sleep(15);
+				Thread.sleep(15L);
 			} catch (InterruptedException var2) {
 				var2.printStackTrace();
 			}
@@ -162,11 +161,6 @@ public class StickMan implements Runnable {
 			}
 
 			this.y -= this.speedY;
-			
-			//guo
-			
-			Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y);
-			gf.getNetClient().send(msg);
 
 			try {
 				Thread.sleep(7L);

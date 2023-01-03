@@ -141,12 +141,9 @@ public class StickMan implements Runnable {
 					}
 				}).start();
 			}
-			
-			
-			
-			
+
 			try {
-				Thread.sleep(15);
+				Thread.sleep(1);
 			} catch (InterruptedException var2) {
 				var2.printStackTrace();
 			}

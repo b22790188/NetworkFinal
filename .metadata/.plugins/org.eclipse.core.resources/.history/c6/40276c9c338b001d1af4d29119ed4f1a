@@ -16,7 +16,7 @@ public class StickMan implements Runnable {
 	public static final int HEIGHT = 32;
 	public static final int initialX = 300;
 	public static final int initialY = 100;
-	public static final int regularSpeedX = 3;
+	public static final int regularSpeedX = 1;
 	public static final int regularSpeedY = 1;
 	private int x;
 	private int y;
@@ -108,7 +108,7 @@ public class StickMan implements Runnable {
 					Stickman_Move_Msg msg = new Stickman_Move_Msg(this.id,this.x,this.y);
 					gf.getNetClient().send(msg);
 
-				this.speedX = 3;
+				this.speedX = 1;
 			}
 
 			if (this.right) {
@@ -127,7 +127,7 @@ public class StickMan implements Runnable {
 					Stickman_Move_Msg msg = new Stickman_Move_Msg(id,this.x,this.y);
 					gf.getNetClient().send(msg);
 
-				this.speedX = 3;
+				this.speedX = 1;
 			}
 
 			if (this.up && this.hit("down") && !this.jumping) {
@@ -141,12 +141,9 @@ public class StickMan implements Runnable {
 					}
 				}).start();
 			}
-			
-			
-			
-			
+
 			try {
-				Thread.sleep(15);
+				Thread.sleep(15L);
 			} catch (InterruptedException var2) {
 				var2.printStackTrace();
 			}

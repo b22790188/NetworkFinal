@@ -141,9 +141,8 @@ public class StickMan implements Runnable {
 					}
 				}).start();
 			}
-			
-			
-			
+
+			System.out.println(":D");
 			
 			try {
 				Thread.sleep(15);
