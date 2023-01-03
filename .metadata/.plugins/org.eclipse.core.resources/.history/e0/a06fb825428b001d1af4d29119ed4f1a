@@ -169,15 +169,11 @@ public class NetClient {
 					msg = new New_Stickman_Msg(client);
 					msg.parse(dis);
 					
-					break;
-				case Msg.STICKMAN_EXIST_MSG:
-					msg = new Stickman_Exist_Msg(client);
-					msg.parse(dis);
+					System.out.println(msg); //test
 					break;
 			}
 		}
 	}
-	
 	public void send(Msg msg) {
 		msg.send(ds, serverIP, Server_UDP_Port);
 	}

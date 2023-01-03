@@ -68,14 +68,6 @@ public class New_Stickman_Msg implements Msg{
 			newStickman.setID(id);
 			client.getStickManSet().add(newStickman);
 			
-			/*
-			 * 在收到新stickman的訊息時，表示有新的客戶端加入，需要回傳自己存在
-			 * 讓新客戶端將自己加進去。
-			 */
-			Stickman_Exist_Msg msg = new Stickman_Exist_Msg(this.client.getStickMan());
-			this.client.getNetClient().send(msg);;
-			
-			
 			System.out.println("msg parse successfully");  //test
 		}
 		catch(IOException ioe) {

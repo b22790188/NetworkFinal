@@ -1,0 +1,5 @@
+package Msg;
+
+public class StickMan_Exist_Msg {
+
+}

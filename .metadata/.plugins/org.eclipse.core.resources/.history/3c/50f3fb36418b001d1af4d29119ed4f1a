@@ -18,7 +18,7 @@ public class GameFrame extends JFrame {
 	public static final int WIDTH = 1024;
 	public static final int HEIGHT = 576;
 	private static final Graphics Graphics = null;
-	private StickMan stickMan = new StickMan(this,StickMan.initialX,StickMan.initialY);
+	private StickMan stickMan = new StickMan(this);
 	private Controller controller = new Controller(this);
 	public Map map = new Map();
 	

@@ -30,11 +30,8 @@ public class StickMan implements Runnable {
 	private boolean down = false;
 	private boolean jumping = false;
 	private Map map = new Map();
-	
-	/*
-	 * 建構子新增參數 by guo
-	 */
-	public StickMan(GameFrame gf,int initialX,int initialY) throws IOException {
+
+	public StickMan(GameFrame gf) throws IOException {
 		this.gf = gf;
 		this.setStickManX(initialX);
 		this.setStickManY(initialY);
@@ -246,16 +243,7 @@ public class StickMan implements Runnable {
 	public int getID() {
 		return this.id;
 	}
-	public int getInitialX() {
-		return this.initialX;
-	}
-	public int getInitialY() {
-		return this.initialY;
-	}
-	
 	public StickMan getStickManObject() {
 		return this;
 	}
-	
-	
 }

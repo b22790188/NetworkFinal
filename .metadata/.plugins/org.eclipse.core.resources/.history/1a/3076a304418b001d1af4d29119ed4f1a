@@ -246,16 +246,7 @@ public class StickMan implements Runnable {
 	public int getID() {
 		return this.id;
 	}
-	public int getInitialX() {
-		return this.initialX;
-	}
-	public int getInitialY() {
-		return this.initialY;
-	}
-	
 	public StickMan getStickManObject() {
 		return this;
 	}
-	
-	
 }

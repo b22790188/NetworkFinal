@@ -34,7 +34,7 @@ public class Stickman_Move_Msg implements Msg{
 	 * Create stream, write parameter into stream, then send packet to server.
 	 */
 	@Override
-	public void send(DatagramSocket ds, String serverIP, int Server_UDP_Port) {
+	public void send(DatagramSocket ds, String serverIP, int UDP_Port) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(30);
 		DataOutputStream dos = new DataOutputStream(baos);
 		
@@ -51,7 +51,7 @@ public class Stickman_Move_Msg implements Msg{
 		byte[] buf = baos.toByteArray();
 		
 		try {
-			DatagramPacket dp = new DatagramPacket(buf, buf.length, new InetSocketAddress(serverIP,Server_UDP_Port));
+			DatagramPacket dp = new DatagramPacket(buf, buf.length, new InetSocketAddress(serverIP,UDP_Port));
 			ds.send(dp);
 		}
 		catch(IOException ioe) {
