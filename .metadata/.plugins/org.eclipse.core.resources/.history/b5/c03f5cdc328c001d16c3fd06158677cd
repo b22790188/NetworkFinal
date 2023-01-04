@@ -1,7 +1,9 @@
 package character;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.image.ImageObserver;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 
@@ -9,6 +11,7 @@ import Msg.*;
 import map.Map;
 
 public class StickMan implements Runnable {
+	
 	private int id; //added by guo
 	
 	public static final int WIDTH = 32;
@@ -29,8 +32,17 @@ public class StickMan implements Runnable {
 	private boolean down = false;
 	private boolean jumping = false;
 	private Map map = new Map();
+	
+	//added by guo
+	private boolean live = true;
+	private int blood = 5;
+	private boolean die = false;
 
-	public StickMan(GameFrame gf) throws IOException {
+
+	/*
+	 * 建構子新增參數 by guo
+	 */
+	public StickMan(GameFrame gf,int initialX,int initialY) throws IOException {
 		this.gf = gf;
 		this.setStickManX(initialX);
 		this.setStickManY(initialY);
@@ -68,6 +80,10 @@ public class StickMan implements Runnable {
 	public int getSpeedY() {
 		return this.speedY;
 	}
+	public boolean getStickManDie() {
+		return this.die;
+	}
+
 
 	public void moveLeft() {
 		this.left = true;
@@ -137,14 +153,24 @@ public class StickMan implements Runnable {
 						/*
 						 * below added by guo
 						 */
-						Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y);
-						gf.getNetClient().send(msg);
 					}
 				}).start();
 			}
+			
+			
+			//扣血
+			if(this.hitBullet()){
+			    blood--;
+			}
+			
+			if(blood == 0){
+				(new Thread(this)).interrupt();
+				die = true;
+				break;
+			}
 
 			try {
-				Thread.sleep(15L);
+				Thread.sleep(15);
 			} catch (InterruptedException var2) {
 				var2.printStackTrace();
 			}
@@ -160,6 +186,11 @@ public class StickMan implements Runnable {
 			}
 
 			this.y -= this.speedY;
+			
+			//guo
+			
+			Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y);
+			gf.getNetClient().send(msg);
 
 			try {
 				Thread.sleep(7L);
@@ -199,20 +230,21 @@ public class StickMan implements Runnable {
 
 		return false;
 	}
-
+	
 	public void gravity() {
 		(new Thread() {
 			public void run() {
 				while(true) {
-					if (!StickMan.this.jumping && !StickMan.this.hit("down")) {
-						StickMan var10000 = StickMan.this;
-						var10000.y += StickMan.this.speedY;
+					if (!jumping && !hit("down")) {
+						y += StickMan.this.speedY;
+						
 						/*
-						 * below added by guo
-						 */
+						 * 
+						  below added by guo
 						System.out.println(x+" "+y);
 						Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y);
 						gf.getNetClient().send(msg);
+						 */
 					}
 
 					try {
@@ -225,6 +257,28 @@ public class StickMan implements Runnable {
 		}).start();
 	}
 	
+	public boolean hitBullet() {
+		  Rectangle stickManRec = new Rectangle(this.x, this.y, 32, 32);
+
+		  for(int i = 0; i < this.gf.getController().getBulletList().size(); i++) {
+			  Bullet tempBullet = this.gf.getController().getBulletList().get(i);
+			  Rectangle object = tempBullet.getBounds();
+
+			  if (stickManRec.intersects(object)) {
+				  this.gf.getController().removeBullet(tempBullet);
+				  return true;
+			  }
+		  }
+
+		  return false;
+	}
+	
+	public void drawBloods(Graphics g) {
+		for(int i = 0; i<blood; i++) {
+		   g.drawImage((new ImageIcon("heart.png")).getImage(), 980-i*32, 32, 32, 32, (ImageObserver)null);
+		 }
+
+	}
 	/*
 	 * code below added by guo
 	 */
@@ -234,7 +288,15 @@ public class StickMan implements Runnable {
 	public int getID() {
 		return this.id;
 	}
-	public StickMan getStickManObject() {
-		return this;
+	public int getInitialX() {
+		return this.initialX;
 	}
+	public int getInitialY() {
+		return this.initialY;
+	}
+	
+	public void setLive(boolean live) {
+		this.live = live;
+	}
+	
 }

@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
 import javax.swing.JFrame;
+
+import Msg.Stickman_Move_Msg;
 import map.Map;
 import Net.NetClient;
 
@@ -15,17 +17,22 @@ import Net.NetClient;
 public class GameFrame extends JFrame {
 	public static final int WIDTH = 1024;
 	public static final int HEIGHT = 576;
+	public static final double OBJECT_SIDE = 32;
+	
 	private static final Graphics Graphics = null;
-	private StickMan stickMan = new StickMan(this);
 	private Controller controller = new Controller(this);
+	private StickMan stickMan = new StickMan(this,StickMan.initialX,StickMan.initialY);
 	public Map map = new Map();
 	
-	private NetClient nc = new NetClient(this);       //guo added
-	private List<Bullet> bullets = new ArrayList<>();
-	private List<StickMan> stickman = new ArrayList<>();
+	private List<Bullet> BulletSet = new ArrayList<>();     //BulletSet is used to record bullet on screen 
 	
+	private List<StickMan> StickManSet = new ArrayList<StickMan>(); //StickManSet is used to record Stickman online
+	private NetClient nc = new NetClient(this);             //added by guo
 
 	public GameFrame() throws Exception {
+		
+		StickManSet.add(this.stickMan);                     //added by guo
+		
 		(new Thread() {
 			public void run() {
 				while(true) {
@@ -62,9 +69,38 @@ public class GameFrame extends JFrame {
 	public void paint(Graphics g) {
 		BufferedImage bi = (BufferedImage)this.createImage(1024, 576);
 		Graphics big = bi.getGraphics();
+		
+		StickMan tempStickMan;
+		for(int i = 0 ; i < StickManSet.size() ; i++) {
+			
+			tempStickMan = StickManSet.get(i);
+			
+			big.drawImage(tempStickMan.getStickMan(), tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);
+//			System.out.println("setx : "+this.StickManSet.get(i).getStickManX()+"sety : "+this.StickManSet.get(i).getStickManY());
+//			System.out.println("x : "+this.stickMan.getStickManX()+"y : "+this.stickMan.getStickManY());
+		}
+
+		/*
+		 *commented by guo 
 		big.drawImage(this.stickMan.getStickMan(), this.stickMan.getStickManX(), this.stickMan.getStickManY(), 32, 32, (ImageObserver)null);
+		 */
 		controller.drawBullets(big);
 		this.map.drawMap(big);
+		this.stickMan.drawBloods(big);
 		g.drawImage(bi, 0, 0, (ImageObserver)null);
+	}
+	
+	/*
+	 * code below added by guo
+	 */
+	public NetClient getNetClient() {
+		return nc;
+	}
+	public List<Bullet> getBulletSet() {
+		return BulletSet;
+	}
+	
+	public List<StickMan> getStickManSet(){
+		return StickManSet;
 	}
 }

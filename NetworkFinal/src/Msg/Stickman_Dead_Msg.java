@@ -59,7 +59,7 @@ public class Stickman_Dead_Msg implements Msg{
 			
 			for(StickMan s : client.getStickManSet()) {
 				if(removing_stickman_id == s.getID()) {
-					s.setLive(false);
+					s.setStickManDie(true);
 					break;
 				}
 			}

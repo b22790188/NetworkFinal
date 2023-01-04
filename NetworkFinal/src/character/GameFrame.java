@@ -74,8 +74,9 @@ public class GameFrame extends JFrame {
 		for(int i = 0 ; i < StickManSet.size() ; i++) {
 			
 			tempStickMan = StickManSet.get(i);
-			
-			big.drawImage(tempStickMan.getStickMan(), tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);
+			if(!tempStickMan.getStickManDie()) {
+				big.drawImage(tempStickMan.getStickMan(), tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);				
+			}
 //			System.out.println("setx : "+this.StickManSet.get(i).getStickManX()+"sety : "+this.StickManSet.get(i).getStickManY());
 //			System.out.println("x : "+this.stickMan.getStickManX()+"y : "+this.stickMan.getStickManY());
 		}

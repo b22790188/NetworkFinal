@@ -36,7 +36,9 @@ public class StickMan implements Runnable {
 	//added by guo
 	private boolean live = true;
 	private int blood = 5;
-	
+	private boolean die = false;
+
+
 	/*
 	 * 建構子新增參數 by guo
 	 */
@@ -78,6 +80,10 @@ public class StickMan implements Runnable {
 	public int getSpeedY() {
 		return this.speedY;
 	}
+	public boolean getStickManDie() {
+		return this.die;
+	}
+
 
 	public void moveLeft() {
 		this.left = true;
@@ -157,15 +163,12 @@ public class StickMan implements Runnable {
 			    blood--;
 			}
 			
-			/*
-			 * 
-			沒血
 			if(blood == 0){
-			    running = false;
+//				(new Thread(this)).interrupt();
+				die = true;
+				break;
 			}
-			 */
-			
-			
+
 			try {
 				Thread.sleep(15);
 			} catch (InterruptedException var2) {
@@ -292,8 +295,8 @@ public class StickMan implements Runnable {
 		return this.initialY;
 	}
 	
-	public void setLive(boolean live) {
-		this.live = live;
+	public void setStickManDie(boolean die) {
+		this.die = die;
 	}
 	
 }

@@ -40,7 +40,7 @@ public class NetClient {
 			 * Create TCP socket by Socket(), and create UDP socket by self-defined class
 			 * UDPThread
 			 */
-			s = new Socket("localhost", Server_TCP_PORT);
+			s = new Socket("192.168.1.100", Server_TCP_PORT);
 			UDPThread UDP_thread = new UDPThread();
 
 			/**
