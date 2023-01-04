@@ -31,6 +31,9 @@ public class StickMan implements Runnable {
 	private boolean jumping = false;
 	private Map map = new Map();
 	
+	//added by guo
+	private boolean live = true;
+	
 	/*
 	 * 建構子新增參數 by guo
 	 */
@@ -253,9 +256,8 @@ public class StickMan implements Runnable {
 		return this.initialY;
 	}
 	
-	public StickMan getStickManObject() {
-		return this;
+	public void setLive(boolean live) {
+		this.live = live;
 	}
-	
 	
 }

@@ -7,7 +7,11 @@ import java.awt.*;
 import java.io.IOException;
 
 public class Bullet implements Runnable{
-	private int id; //added by guo
+	
+	//added by guo
+	private static int ID = 10;
+	private int stickmanID;
+	private int id; 
 	
     private Image bullet = (new ImageIcon("磚頭.png")).getImage();
     private GameFrame gf;
@@ -18,8 +22,15 @@ public class Bullet implements Runnable{
     private Thread th;
     private Map map = new Map();
 
-
-    Bullet(int x, int y, int valX, int valY, GameFrame gf) throws IOException {
+    //修改建構子型態 by guo
+    public Bullet(double x, double y, double valX, double valY, GameFrame gf) throws IOException {
+    	/*
+    	 * add by guo
+    	 * Stickman取得火柴人的ID，用來判斷子彈是誰的。
+    	 */
+    	this.stickmanID = gf.getStickMan().getID();
+    	this.id = ID++; 
+    	
         this.gf = gf;
         double len = Math.pow(Math.pow(valX, 2)+ Math.pow(valY, 2), 0.5);
         this.x = x;
@@ -41,18 +52,30 @@ public class Bullet implements Runnable{
             if(x <= 0) {
                 gf.getController().removeBullet(this);
                 th.stop();
+                
+                //added by guo
+                break;
             }
             if(x >= 1024) {
                 gf.getController().removeBullet(this);
                 th.stop();
+                
+                //added by guo
+                break;
             }
             if(y <= 0) {
                 gf.getController().removeBullet(this);
                 th.stop();
+                
+                //added by guo
+                break;
             }
             if(y >= 576) {
                 gf.getController().removeBullet(this);
                 th.stop();
+                
+                //added by guo
+                break;
             }
             hit();
 
@@ -117,5 +140,9 @@ public class Bullet implements Runnable{
     }
     public int getID() {
     	return this.id;
+    }
+    
+    public int getStickmanID() {
+    	return stickmanID;
     }
 }

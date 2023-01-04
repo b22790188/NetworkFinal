@@ -22,11 +22,13 @@ public class Controller {
     public void drawBullets(Graphics g) {
         for(int i = 0; i<bulletList.size(); i++) {
             tempBullet = bulletList.get(i);
+            
+//            System.out.println("bulletx: "+(int)tempBullet.getBulletX()+" bullety: "+(int)tempBullet.getBulletY());
             g.drawImage(tempBullet.getBulletImage(), (int)tempBullet.getBulletX(), (int)tempBullet.getBulletY(), 32, 32, (ImageObserver)null);
         }
-
     }
 
+    
 //    public void createEnemy(int enemy_count){
 //        for(int i=0; i<enemy_count; i++){
 //            addEntity(new Enemy(r.nextInt(640), -10, tex, this, game));

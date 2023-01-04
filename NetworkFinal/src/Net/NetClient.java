@@ -174,6 +174,10 @@ public class NetClient {
 					msg = new Stickman_Exist_Msg(client);
 					msg.parse(dis);
 					break;
+				case Msg.NEW_BULLET_MSG:
+					msg = new New_Bullet_Msg(client);
+					msg.parse(dis);
+					break;
 			}
 		}
 	}
