@@ -25,7 +25,7 @@ public class MouseListener extends MouseAdapter {
         double x = gf.getStickMan().getStickManX();
         double y = gf.getStickMan().getStickManY();
         
-        if(!((mx < x + GameFrame.OBJECT_SIDE/2 && mx > x - GameFrame.OBJECT_SIDE/2) && (my < y + GameFrame.OBJECT_SIDE/2 && my > y - GameFrame.OBJECT_SIDE/2))) {
+        if(!((mx < x + GameFrame.OBJECT_SIDE/2 && mx > x - GameFrame.OBJECT_SIDE/2) && (my < y + GameFrame.OBJECT_SIDE/2 && my > y - GameFrame.OBJECT_SIDE/2)))
 	        try {
 	        	double valX = mx-gf.getStickMan().getStickManX();
 	            double valY = my- gf.getStickMan().getStickManY();
@@ -51,6 +51,7 @@ public class MouseListener extends MouseAdapter {
 	            ex.printStackTrace();
 	        }
         }
+
     }
     
     

@@ -86,7 +86,6 @@ public class GameFrame extends JFrame {
 		 */
 		controller.drawBullets(big);
 		this.map.drawMap(big);
-		this.stickMan.drawBloods(big);
 		g.drawImage(bi, 0, 0, (ImageObserver)null);
 	}
 	

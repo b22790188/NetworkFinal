@@ -17,11 +17,9 @@ import Net.NetClient;
 public class GameFrame extends JFrame {
 	public static final int WIDTH = 1024;
 	public static final int HEIGHT = 576;
-	public static final double OBJECT_SIDE = 32;
-	
 	private static final Graphics Graphics = null;
-	private Controller controller = new Controller(this);
 	private StickMan stickMan = new StickMan(this,StickMan.initialX,StickMan.initialY);
+	private Controller controller = new Controller(this);
 	public Map map = new Map();
 	
 	private List<Bullet> BulletSet = new ArrayList<>();     //BulletSet is used to record bullet on screen 
@@ -86,7 +84,6 @@ public class GameFrame extends JFrame {
 		 */
 		controller.drawBullets(big);
 		this.map.drawMap(big);
-		this.stickMan.drawBloods(big);
 		g.drawImage(bi, 0, 0, (ImageObserver)null);
 	}
 	

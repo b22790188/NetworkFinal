@@ -13,6 +13,8 @@ public class MouseListener extends MouseAdapter {
     /*
      * code below added by guo
      */
+    int valx;
+    int valy;
     
     public MouseListener(GameFrame gf) {
         this.gf = gf;
@@ -25,19 +27,11 @@ public class MouseListener extends MouseAdapter {
         double x = gf.getStickMan().getStickManX();
         double y = gf.getStickMan().getStickManY();
         
-        if(!((mx < x + GameFrame.OBJECT_SIDE/2 && mx > x - GameFrame.OBJECT_SIDE/2) && (my < y + GameFrame.OBJECT_SIDE/2 && my > y - GameFrame.OBJECT_SIDE/2))) {
+        if(!((mx < x + GameFrame.OBJECT_SIDE/2 && mx > x - GameFrame.OBJECT_SIDE/2) && (my < y + GameFrame.OBJECT_SIDE/2 && my > y - GameFrame.OBJECT_SIDE/2)))
 	        try {
-	        	double valX = mx-gf.getStickMan().getStickManX();
-	            double valY = my- gf.getStickMan().getStickManY();
-	            double len = Math.pow(Math.pow(valX, 2)+ Math.pow(valY, 2), 0.5);
-
-	            valX = valX/len;
-	            valY = valY/len;
-	            x = x + valX * w;
-	            y = y + valY * w;
 	        	
-	        	
-	        	Bullet newBullet = new Bullet(x,y,valX,valY,gf);
+	
+	        	Bullet newBullet = new Bullet(gf.getStickMan().getStickManX(), gf.getStickMan().getStickManY(), (mx-gf.getStickMan().getStickManX()), (my- gf.getStickMan().getStickManY()), gf);
 	        	System.out.println("newBulletx: "+newBullet.getBulletX()+" newBullety: "+newBullet.getBulletY()+"new valx"+newBullet.getValX());
 	        	gf.getController().getBulletList().add(newBullet);
 	        	
@@ -51,6 +45,7 @@ public class MouseListener extends MouseAdapter {
 	            ex.printStackTrace();
 	        }
         }
+
     }
     
     

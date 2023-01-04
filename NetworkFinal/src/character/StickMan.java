@@ -1,7 +1,9 @@
 package character;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.image.ImageObserver;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 
@@ -33,6 +35,7 @@ public class StickMan implements Runnable {
 	
 	//added by guo
 	private boolean live = true;
+	private int blood = 5;
 	
 	/*
 	 * 建構子新增參數 by guo
@@ -149,6 +152,18 @@ public class StickMan implements Runnable {
 			}
 			
 			
+			//扣血
+			if(this.hitBullet()){
+			    blood--;
+			}
+			
+			/*
+			 * 
+			沒血
+			if(blood == 0){
+			    running = false;
+			}
+			 */
 			
 			
 			try {
@@ -239,7 +254,28 @@ public class StickMan implements Runnable {
 		}).start();
 	}
 	
+	public boolean hitBullet() {
+		  Rectangle stickManRec = new Rectangle(this.x, this.y, 32, 32);
+
+		  for(int i = 0; i < this.gf.getController().getBulletList().size(); i++) {
+			  Bullet tempBullet = this.gf.getController().getBulletList().get(i);
+			  Rectangle object = tempBullet.getBounds();
+
+			  if (stickManRec.intersects(object)) {
+				  this.gf.getController().removeBullet(tempBullet);
+				  return true;
+			  }
+		  }
+
+		  return false;
+	}
 	
+	public void drawBloods(Graphics g) {
+		for(int i = 0; i<blood; i++) {
+		   g.drawImage((new ImageIcon("heart.png")).getImage(), 980-i*32, 32, 32, 32, (ImageObserver)null);
+		 }
+
+	}
 	/*
 	 * code below added by guo
 	 */

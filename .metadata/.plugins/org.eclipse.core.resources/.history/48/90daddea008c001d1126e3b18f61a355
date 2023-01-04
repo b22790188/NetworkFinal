@@ -32,10 +32,11 @@ public class Bullet implements Runnable{
     	this.id = ID++; 
     	
         this.gf = gf;
+        double len = Math.pow(Math.pow(valX, 2)+ Math.pow(valY, 2), 0.5);
         this.x = x;
         this.y = y;
-        this.valX = valX;
-        this.valY = valY;
+        this.valX = valX/len;
+        this.valY = valY/len;
 //        System.out.println("valX: "+this.valX);
 //        System.out.println("valY: "+this.valY);
         th = new Thread(this);
@@ -124,10 +125,6 @@ public class Bullet implements Runnable{
     public double getBulletY(){
         return y;
     }
-    public Rectangle getBounds(){
-        return new Rectangle((int)x, (int)y, 32, 32);
-    }
-    
     public double getValX(){
         return valX;
     }
