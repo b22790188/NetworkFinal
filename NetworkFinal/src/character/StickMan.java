@@ -120,8 +120,8 @@ public class StickMan implements Runnable {
 				/*
 				 * below added by guo
 				 */
-					Stickman_Move_Msg msg = new Stickman_Move_Msg(this.id,this.x,this.y);
-					gf.getNetClient().send(msg);
+				Stickman_Move_Msg msg = new Stickman_Move_Msg(this.id,this.x,this.y);
+				gf.getNetClient().send(msg);
 
 				this.speedX = 3;
 			}
@@ -139,8 +139,8 @@ public class StickMan implements Runnable {
 				/*
 				 * below added by guo
 				 */
-					Stickman_Move_Msg msg = new Stickman_Move_Msg(id,this.x,this.y);
-					gf.getNetClient().send(msg);
+				Stickman_Move_Msg msg = new Stickman_Move_Msg(id,this.x,this.y);
+				gf.getNetClient().send(msg);
 
 				this.speedX = 3;
 			}
@@ -150,9 +150,6 @@ public class StickMan implements Runnable {
 					public void run() {
 						StickMan.this.jump();
 						
-						/*
-						 * below added by guo
-						 */
 					}
 				}).start();
 			}
@@ -166,6 +163,9 @@ public class StickMan implements Runnable {
 			if(blood == 0){
 //				(new Thread(this)).interrupt();
 				die = true;
+				int deathNum = gf.getDeathNum();
+				gf.setDeathNum(++deathNum);
+				
 				break;
 			}
 
@@ -238,13 +238,6 @@ public class StickMan implements Runnable {
 					if (!jumping && !hit("down")) {
 						y += StickMan.this.speedY;
 						
-						/*
-						 * 
-						  below added by guo
-						System.out.println(x+" "+y);
-						Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y);
-						gf.getNetClient().send(msg);
-						 */
 					}
 
 					try {
@@ -279,6 +272,7 @@ public class StickMan implements Runnable {
 		 }
 
 	}
+	
 	/*
 	 * code below added by guo
 	 */

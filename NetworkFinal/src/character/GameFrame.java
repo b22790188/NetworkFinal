@@ -24,10 +24,10 @@ public class GameFrame extends JFrame {
 	private StickMan stickMan = new StickMan(this,StickMan.initialX,StickMan.initialY);
 	public Map map = new Map();
 	
-	private List<Bullet> BulletSet = new ArrayList<>();     //BulletSet is used to record bullet on screen 
 	
 	private List<StickMan> StickManSet = new ArrayList<StickMan>(); //StickManSet is used to record Stickman online
 	private NetClient nc = new NetClient(this);             //added by guo
+	private int deathNum = 0;
 
 	public GameFrame() throws Exception {
 		
@@ -37,6 +37,25 @@ public class GameFrame extends JFrame {
 			public void run() {
 				while(true) {
 					GameFrame.this.repaint();
+					
+					//test
+					System.out.println("StickMansetsize : "+StickManSet.size());
+					if(StickManSet.size() > 1 && deathNum == StickManSet.size() - 1) {
+						
+						/*
+						 * 僅不顯示舊的的GameFrame，但其仍存在，待改進。
+						 */
+						GameFrame.this.setVisible(false);
+						
+						/*
+						 * 送出Disconnect訊息，讓Server端關閉連線。
+						 */
+						nc.sendDisconnectRequest();
+						
+						new InitialScene();
+						
+						break;
+					}
 				}
 			}
 		}).start();
@@ -97,11 +116,16 @@ public class GameFrame extends JFrame {
 	public NetClient getNetClient() {
 		return nc;
 	}
-	public List<Bullet> getBulletSet() {
-		return BulletSet;
-	}
 	
 	public List<StickMan> getStickManSet(){
 		return StickManSet;
+	}
+	
+	public void setDeathNum(int deadNum) {
+		this.deathNum = deadNum;
+	}
+	
+	public int getDeathNum() {
+		return deathNum;
 	}
 }

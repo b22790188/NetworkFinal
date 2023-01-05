@@ -7,10 +7,6 @@ import java.io.IOException;
 
 
 public class InitialScene extends MouseAdapter{
-		public static void main(String[] args) {
-			InitialScene w1 = new InitialScene();
-			
-		}
 		
 		JButton button_start = new JButton();
 		ImageIcon image_b1 = new ImageIcon("button1.png");
