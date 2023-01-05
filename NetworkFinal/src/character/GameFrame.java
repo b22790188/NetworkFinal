@@ -4,6 +4,7 @@ import java.util.*; // guo added
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -43,6 +45,15 @@ public class GameFrame extends JFrame {
 	
 	private int deathNum = 0;
     
+	private Image girlLeftImage = (new ImageIcon("girl_left.png")).getImage();
+	private Image girlRightImage = (new ImageIcon("girl_right.png")).getImage();
+	private Image girl2LeftImage = (new ImageIcon("girl2_left.png")).getImage();
+	private Image girl2RightImage = (new ImageIcon("girl2_right.png")).getImage();
+	private Image manLeftImage = (new ImageIcon("man_left.png")).getImage();
+	private Image manRightImage = (new ImageIcon("man_right.png")).getImage();
+	private Image man2LeftImage = (new ImageIcon("man2_left.png")).getImage();
+	private Image man2RightImage = (new ImageIcon("man2_right.png")).getImage();
+	
 	public GameFrame() throws Exception {
 		AudioInputStream open_audioStream = AudioSystem.getAudioInputStream(open_file);
 		close = AudioSystem.getClip();
@@ -79,6 +90,10 @@ public class GameFrame extends JFrame {
 						 */
 						GameFrame.this.setVisible(false);
 						
+						/*
+						 * 關閉音樂
+						 */
+						close.stop();
 						/*
 						 * 送出Disconnect訊息，讓Server端關閉連線。
 						 */
@@ -127,7 +142,43 @@ public class GameFrame extends JFrame {
 			
 			tempStickMan = StickManSet.get(i);
 			if(!tempStickMan.getStickManDie()) {
-				big.drawImage(tempStickMan.getStickMan(), tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);				
+				
+				if(tempStickMan.getID() % 4 == 0) {
+					if(tempStickMan.getDir() == 0) {
+						big.drawImage(girlLeftImage, tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);															
+					}
+					else {
+						big.drawImage(girlRightImage, tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);															
+					}
+				}
+				
+				else if(tempStickMan.getID() % 4 == 1) {
+					if(tempStickMan.getDir() == 0) {
+						big.drawImage(girl2LeftImage, tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);															
+					}
+					else {
+						big.drawImage(girl2RightImage, tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);															
+					}
+				}
+				
+				else if(tempStickMan.getID() % 4 == 2) {
+					if(tempStickMan.getDir() == 0) {
+						big.drawImage(manLeftImage, tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);															
+					}
+					else {
+						big.drawImage(manRightImage, tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);															
+					}
+				}
+				
+				if(tempStickMan.getID() % 4 == 3) {
+					if(tempStickMan.getDir() == 0) {
+						big.drawImage(man2LeftImage, tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);															
+					}
+					else {
+						big.drawImage(man2RightImage, tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);															
+					}
+				}
+				
 			}
 		}
 

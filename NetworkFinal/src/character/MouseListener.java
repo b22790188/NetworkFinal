@@ -31,11 +31,12 @@ public class MouseListener extends MouseAdapter {
 	            double valY = my-gf.getStickMan().getStickManY();
 	            double len = Math.pow(Math.pow(valX, 2)+ Math.pow(valY, 2), 0.5);
 
-	            valX = valX/len;
+	            valX = valX/len ;
 	            valY = valY/len;
 	            x = x + valX * w;
 	            y = y + valY * w;
-	        	
+	        	valX = valX * 10;
+	        	valY = valY * 10;
 	        	
 	        	Bullet newBullet = new Bullet(x,y,valX,valY,gf);
 	        	System.out.println("newBulletx: "+newBullet.getBulletX()+" newBullety: "+newBullet.getBulletY()+"new valx"+newBullet.getValX());

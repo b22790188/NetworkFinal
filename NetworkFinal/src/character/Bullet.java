@@ -34,8 +34,8 @@ public class Bullet implements Runnable{
         this.gf = gf;
         this.x = x;
         this.y = y;
-        this.valX = valX * 10;
-        this.valY = valY * 10;
+        this.valX = valX;
+        this.valY = valY;
         this.map = gf.map;
 //        System.out.println("valX: "+this.valX);
 //        System.out.println("valY: "+this.valY);
@@ -88,7 +88,7 @@ public class Bullet implements Runnable{
     }
 
     public boolean hit() {
-        Rectangle bulletRec = new Rectangle((int)x, (int)y, 9, 9);
+        Rectangle bulletRec = new Rectangle((int)x, (int)y, 32, 32);
 
         for(int i = 0; i < this.map.getTileNum(); ++i) {
             Rectangle object = null;

@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
+
+import javax.swing.ImageIcon;
+
 import character.GameFrame;
 import character.StickMan;
 
@@ -19,15 +22,17 @@ public class Stickman_Move_Msg implements Msg{
 	private int x, y;
 	private GameFrame client;
 	private int id;
+	private int dir;
 	
 	public Stickman_Move_Msg(GameFrame client){
 		this.client = client;
 	}
 	
-	public Stickman_Move_Msg(int id, int x, int y){
+	public Stickman_Move_Msg(int id, int x, int y,int dir){
 		this.id = id;
 		this.x = x;
 		this.y = y;
+		this.dir = dir;
 	}
 	
 	/*
@@ -43,6 +48,7 @@ public class Stickman_Move_Msg implements Msg{
 			dos.writeInt(id);
 			dos.writeInt(x);
 			dos.writeInt(y);
+			dos.writeInt(dir);
 		}
 		catch(IOException ioe) {
 			ioe.printStackTrace();
@@ -74,11 +80,13 @@ public class Stickman_Move_Msg implements Msg{
 			
 			int update_x = dis.readInt();
 			int update_y = dis.readInt();
+			int update_dir = dis.readInt();
 			
 			for(StickMan c : client.getStickManSet()) {
 				if(c.getID() == id) {
 					c.setStickManX(update_x);
 					c.setStickManY(update_y);
+					c.setDir(update_dir);
 					break;
 				}
 			}			

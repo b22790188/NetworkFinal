@@ -24,7 +24,7 @@ public class Controller {
             tempBullet = bulletList.get(i);
             
 //            System.out.println("bulletx: "+(int)tempBullet.getBulletX()+" bullety: "+(int)tempBullet.getBulletY());
-            g.drawImage(tempBullet.getBulletImage(), (int)tempBullet.getBulletX(), (int)tempBullet.getBulletY(), 9, 9, (ImageObserver)null);
+            g.drawImage(tempBullet.getBulletImage(), (int)tempBullet.getBulletX(), (int)tempBullet.getBulletY(), 32, 32, (ImageObserver)null);
         }
     }
 

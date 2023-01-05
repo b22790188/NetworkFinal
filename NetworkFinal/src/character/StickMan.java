@@ -40,7 +40,12 @@ public class StickMan implements Runnable {
 	private boolean live = true;
 	private int blood = 5;
 	private boolean die = false;
-
+	
+	/*
+	 * 0的時候代表火柴人方向為左邊，1的時候代表火柴人方向為右邊。
+	 */
+	private int dir = 0;
+	
 
 	/*
 	 * 建構子新增參數 by guo
@@ -123,8 +128,10 @@ public class StickMan implements Runnable {
 					
 				}
 
-				if (this.x >= 0) {
+				if (this.x >= 0) {					
+					dir = 0;
 					this.x -= this.speedX;
+					
 					stickMan = (new ImageIcon("girl_left.png")).getImage();
 					
 				}
@@ -132,26 +139,29 @@ public class StickMan implements Runnable {
 				/*
 				 * below added by guo
 				 */
-				Stickman_Move_Msg msg = new Stickman_Move_Msg(this.id,this.x,this.y);
+				Stickman_Move_Msg msg = new Stickman_Move_Msg(this.id,this.x,this.y,dir);
 				gf.getNetClient().send(msg);
 
 				this.speedX = 3;
 			}
 
 			if (this.right) {
+				
+				
 				if (this.hit("right")) {
 					this.speedX = 0;
 
 				}
 
 				if (this.x + 32 <= 1024) {
+					dir = 1;
 					this.x += this.speedX;
 					stickMan = (new ImageIcon("girl_right.png")).getImage();
 				}
 				/*
 				 * below added by guo
 				 */
-				Stickman_Move_Msg msg = new Stickman_Move_Msg(id,this.x,this.y);
+				Stickman_Move_Msg msg = new Stickman_Move_Msg(id,this.x,this.y,dir);
 				gf.getNetClient().send(msg);
 
 				this.speedX = 3;
@@ -201,7 +211,7 @@ public class StickMan implements Runnable {
 			
 			//guo
 			
-			Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y);
+			Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y,dir);
 			gf.getNetClient().send(msg);
 
 			try {
@@ -273,7 +283,7 @@ public class StickMan implements Runnable {
 				while(true) {
 					if (!jumping && !hit("down")) {
 						y += StickMan.this.speedY;
-						Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y);
+						Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y,dir);
 						gf.getNetClient().send(msg);
 					}
 					
@@ -332,4 +342,11 @@ public class StickMan implements Runnable {
 		this.die = die;
 	}
 	
+	public void setDir(int dir) {
+		this.dir = dir;
+	}
+	
+	public int getDir() {
+		return dir;
+	}
 }
