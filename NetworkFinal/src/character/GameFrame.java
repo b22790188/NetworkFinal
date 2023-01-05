@@ -6,8 +6,17 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+
+import java.io.InputStream;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import Msg.New_Stickman_Msg;
 import Msg.Stickman_Move_Msg;
@@ -27,17 +36,22 @@ public class GameFrame extends JFrame {
 	private int clientID;
 	private StickMan stickMan;
 	public Map map;
-	private NetClient nc;                     //用來連線的NetClient
+	private NetClient nc;    //用來連線的NetClient
+	
+	private Clip close;
+	File open_file = new File("src/background_music.wav");
 	
 	private int deathNum = 0;
-	
-
+    
 	public GameFrame() throws Exception {
+		AudioInputStream open_audioStream = AudioSystem.getAudioInputStream(open_file);
+		close = AudioSystem.getClip();
+		close.open(open_audioStream);
+		close.start();
 		nc = new NetClient(this);
 		map = new Map(nc.getMapID(),nc.getImageID());
 		stickMan = new StickMan(this,StickMan.initialX,StickMan.initialY);
 		stickMan.setID(clientID);
-		
 		New_Stickman_Msg msg = new New_Stickman_Msg(this.getStickMan());
 		nc.send(msg);
 		
@@ -150,4 +164,6 @@ public class GameFrame extends JFrame {
 	public int getClientID() {
 		return clientID;
 	}
+	
 }
+

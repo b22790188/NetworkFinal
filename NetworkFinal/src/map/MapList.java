@@ -35,8 +35,8 @@ public class MapList {
     this.img2 = ImageIO.read(new File("./grass.png"));
     break;
    case 1 :
-    this.img1 = ImageIO.read(new File("./stone_lava.png"));
-    this.img2 = ImageIO.read(new File("./lava.png"));
+    this.img2 = ImageIO.read(new File("./stone_lava.png"));
+    this.img1 = ImageIO.read(new File("./lava.png"));
     break;
    default :
     break;
