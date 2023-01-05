@@ -13,7 +13,7 @@ public class Bullet implements Runnable{
 	private int stickmanID;
 	private int id; 
 	
-    private Image bullet = (new ImageIcon("磚頭.png")).getImage();
+    private Image bullet = (new ImageIcon("bullet.png")).getImage();
     private GameFrame gf;
     private double valX;
     private double valY;
@@ -34,8 +34,8 @@ public class Bullet implements Runnable{
         this.gf = gf;
         this.x = x;
         this.y = y;
-        this.valX = valX;
-        this.valY = valY;
+        this.valX = valX * 10;
+        this.valY = valY * 10;
         this.map = gf.map;
 //        System.out.println("valX: "+this.valX);
 //        System.out.println("valY: "+this.valY);
@@ -88,7 +88,7 @@ public class Bullet implements Runnable{
     }
 
     public boolean hit() {
-        Rectangle bulletRec = new Rectangle((int)x, (int)y, 32, 32);
+        Rectangle bulletRec = new Rectangle((int)x, (int)y, 9, 9);
 
         for(int i = 0; i < this.map.getTileNum(); ++i) {
             Rectangle object = null;
@@ -96,19 +96,8 @@ public class Bullet implements Runnable{
             int objectY = (Integer)this.map.mapList.map1_barrier[0][i].get(1);
             object = new Rectangle(objectX, objectY, 32, 32);
 
-//            if (this.valX<0) {
-//                object = new Rectangle(objectX - 3, objectY, 32, 32);
-//            } else if (this.valX>=0) {
-//                object = new Rectangle(objectX + 3, objectY, 32, 32);
-//            } else if (this.valY>0) {
-//                object = new Rectangle(objectX, objectY - 3, 32, 32);
-//            } else if (this.valY<=0) {
-//                object = new Rectangle(objectX, objectY + 3, 32, 32);
-//            }
 
             if (bulletRec.intersects(object)) {
-//				System.out.println(objectX + " " + objectY);
-//				System.out.println(this.x + " " + this.y);
                 gf.getController().removeBullet(this);
             }
         }

@@ -253,7 +253,7 @@ public class Server {
 	}
 	
 	private int randomMapImageID() {
-		int r = (int)(Math.random()*1);
+		int r = (int)(Math.random()*2);
 		return r;
 	}
 }

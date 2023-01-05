@@ -27,7 +27,7 @@ public class StickMan implements Runnable {
 	private int speedX;
 	private int speedY;
 	private GameFrame gf;
-	private Image stickMan = (new ImageIcon("磚頭.png")).getImage();
+	private Image stickMan = (new ImageIcon("girl_left.png")).getImage();
 	private boolean left = false;
 	private boolean right = false;
 	private boolean up = false;
@@ -125,6 +125,7 @@ public class StickMan implements Runnable {
 
 				if (this.x >= 0) {
 					this.x -= this.speedX;
+					stickMan = (new ImageIcon("girl_left.png")).getImage();
 					
 				}
 				
@@ -145,7 +146,7 @@ public class StickMan implements Runnable {
 
 				if (this.x + 32 <= 1024) {
 					this.x += this.speedX;
-					
+					stickMan = (new ImageIcon("girl_right.png")).getImage();
 				}
 				/*
 				 * below added by guo
