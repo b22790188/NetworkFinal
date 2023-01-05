@@ -74,15 +74,3 @@ public class InitialScene extends MouseAdapter{
 		}
 		
 }
-/*
- * 
-class game_scene extends JFrame {
-	public game_scene() {
-		super("game_scene");
-		this.setSize(1024, 576);
-		this.setTitle("Stick Fight");
-		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		this.setVisible(true); 
-	}
-}
- */

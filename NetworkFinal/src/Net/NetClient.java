@@ -24,6 +24,8 @@ public class NetClient {
 	private int Disconnect_Port = 10001;
 	private static final int BUFSIZE = 256;
 	private DatagramSocket ds = null;
+	private int mapID;
+	private int mapImageID;
 	
 	/*
 	public static void main(String[] args) {
@@ -40,7 +42,7 @@ public class NetClient {
 			 * Create TCP socket by Socket(), and create UDP socket by self-defined class
 			 * UDPThread
 			 */
-			s = new Socket("192.168.1.100", Server_TCP_PORT);
+			s = new Socket("localhost", Server_TCP_PORT);
 			UDPThread UDP_thread = new UDPThread();
 
 			/**
@@ -58,7 +60,11 @@ public class NetClient {
 			serverIP = instream.readUTF();
 			Server_UDP_Port = instream.readInt();
 			int stickManID = instream.readInt();
-			client.getStickMan().setID(stickManID);
+			client.setClientID(stickManID);
+			mapID = instream.readInt();
+			mapImageID = instream.readInt();
+			
+			
 			System.out.println("Server_UDP_Port"+Server_UDP_Port);//test
 			
 			
@@ -67,8 +73,12 @@ public class NetClient {
 			/*
 			 * 連線成功後，因為Gameframe中已經創建了stickman，所以需要發送newStickman訊息
 			 */
+			
+			/*
+			 * 
 			New_Stickman_Msg msg = new New_Stickman_Msg(client.getStickMan());
 			send(msg);
+			 */
 			
 
 		} catch (IOException ioe) {
@@ -237,5 +247,13 @@ public class NetClient {
 				ioe.printStackTrace();
 			}
 		}
+	}
+	
+	public int getMapID() {
+		return this.mapID;
+	}
+	
+	public int getImageID() {
+		return this.mapImageID;
 	}
 }

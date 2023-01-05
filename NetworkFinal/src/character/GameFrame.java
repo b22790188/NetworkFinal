@@ -9,6 +9,7 @@ import java.awt.image.ImageObserver;
 import java.io.IOException;
 import javax.swing.JFrame;
 
+import Msg.New_Stickman_Msg;
 import Msg.Stickman_Move_Msg;
 import map.Map;
 import Net.NetClient;
@@ -21,17 +22,30 @@ public class GameFrame extends JFrame {
 	
 	private static final Graphics Graphics = null;
 	private Controller controller = new Controller(this);
-	private StickMan stickMan = new StickMan(this,StickMan.initialX,StickMan.initialY);
-	public Map map = new Map();
-	
 	
 	private List<StickMan> StickManSet = new ArrayList<StickMan>(); //StickManSet is used to record Stickman online
-	private NetClient nc = new NetClient(this);             //added by guo
+	private int clientID;
+	private StickMan stickMan;
+	public Map map;
+	private NetClient nc;                     //用來連線的NetClient
+	
 	private int deathNum = 0;
+	
 
 	public GameFrame() throws Exception {
+		nc = new NetClient(this);
+		map = new Map(nc.getMapID(),nc.getImageID());
+		stickMan = new StickMan(this,StickMan.initialX,StickMan.initialY);
+		stickMan.setID(clientID);
 		
-		StickManSet.add(this.stickMan);                     //added by guo
+		New_Stickman_Msg msg = new New_Stickman_Msg(this.getStickMan());
+		nc.send(msg);
+		
+		/*
+		 * 當遊戲一開始時，先將自己加入Set中。
+		 */
+		
+		StickManSet.add(this.stickMan);                     
 		
 		(new Thread() {
 			public void run() {
@@ -39,7 +53,11 @@ public class GameFrame extends JFrame {
 					GameFrame.this.repaint();
 					
 					//test
-					System.out.println("StickMansetsize : "+StickManSet.size());
+//					System.out.println("StickMansetsize : "+StickManSet.size());
+					
+					/*
+					 * 當僅剩下一人在場上時，就進入這個if，準備關閉遊戲。
+					 */
 					if(StickManSet.size() > 1 && deathNum == StickManSet.size() - 1) {
 						
 						/*
@@ -61,6 +79,7 @@ public class GameFrame extends JFrame {
 		}).start();
 		this.initFrame();
 	}
+	
 
 	public StickMan getStickMan() {
 		return this.stickMan;
@@ -75,8 +94,8 @@ public class GameFrame extends JFrame {
 		this.setResizable(false);
 		this.setLocationRelativeTo((Component)null);
 		this.setDefaultCloseOperation(3);
-		Map mapPanel = new Map();
-		this.add(mapPanel);
+//		Map mapPanel = new Map();
+		this.add(map);
 		this.setBackground(Color.WHITE);
 		this.setVisible(true);
 		KeyListener kl = new KeyListener(this);
@@ -96,14 +115,8 @@ public class GameFrame extends JFrame {
 			if(!tempStickMan.getStickManDie()) {
 				big.drawImage(tempStickMan.getStickMan(), tempStickMan.getStickManX(), tempStickMan.getStickManY(), 32, 32, (ImageObserver)null);				
 			}
-//			System.out.println("setx : "+this.StickManSet.get(i).getStickManX()+"sety : "+this.StickManSet.get(i).getStickManY());
-//			System.out.println("x : "+this.stickMan.getStickManX()+"y : "+this.stickMan.getStickManY());
 		}
 
-		/*
-		 *commented by guo 
-		big.drawImage(this.stickMan.getStickMan(), this.stickMan.getStickManX(), this.stickMan.getStickManY(), 32, 32, (ImageObserver)null);
-		 */
 		controller.drawBullets(big);
 		this.map.drawMap(big);
 		this.stickMan.drawBloods(big);
@@ -113,6 +126,11 @@ public class GameFrame extends JFrame {
 	/*
 	 * code below added by guo
 	 */
+	public void setClientID(int clientID) {
+		this.clientID = clientID;
+	}
+	
+	
 	public NetClient getNetClient() {
 		return nc;
 	}
@@ -127,5 +145,9 @@ public class GameFrame extends JFrame {
 	
 	public int getDeathNum() {
 		return deathNum;
+	}
+	
+	public int getClientID() {
+		return clientID;
 	}
 }

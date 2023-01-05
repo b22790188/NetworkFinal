@@ -20,7 +20,7 @@ public class Bullet implements Runnable{
     private double x;
     private double y;
     private Thread th;
-    private Map map = new Map();
+    private Map map;
 
     //修改建構子型態 by guo
     public Bullet(double x, double y, double valX, double valY, GameFrame gf) throws IOException {
@@ -36,6 +36,7 @@ public class Bullet implements Runnable{
         this.y = y;
         this.valX = valX;
         this.valY = valY;
+        this.map = gf.map;
 //        System.out.println("valX: "+this.valX);
 //        System.out.println("valY: "+this.valY);
         th = new Thread(this);

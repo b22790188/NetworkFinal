@@ -18,6 +18,8 @@ public class Server {
 	private static final int Disconnect_Port = 10001;
 	private static final int BUFSIZE = 4096;
 	private List<Client_SInfo> list = new ArrayList<Client_SInfo>();
+	private int mapID;
+	private int mapImageID;
 
 	public static void main(String[] args) {
 		Server server = new Server();
@@ -33,6 +35,8 @@ public class Server {
 		try {
 			ss = new ServerSocket(TCP_PORT);
 			System.out.println("Server is created , waiting for connection...");
+			System.out.println(InetAddress.getLocalHost().getHostAddress());
+			
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
@@ -60,7 +64,16 @@ public class Server {
 				 */
 				DataInputStream instream = new DataInputStream(s.getInputStream());
 				DataOutputStream outstream = new DataOutputStream(s.getOutputStream());
-
+				
+				
+				if(list.size() == 0) {
+					mapID = randomMapID();
+					mapImageID =  randomMapImageID();
+				}
+				System.out.println(mapID);
+				System.out.println(mapImageID);
+				System.out.println(list.size());
+				
 				/*
 				 * Read Client side ip and UDP_port from instream, and add client info to client
 				 * list
@@ -69,13 +82,16 @@ public class Server {
 				int Client_UDP_Port = instream.readInt();
 				Client_SInfo client = new Client_SInfo(Client_IP, Client_UDP_Port, id);
 				list.add(client);
-
+				
+				
 				/*
 				 * Write Server side ip, UDP_port, id to Client side.
 				 */
 				outstream.writeUTF(InetAddress.getLocalHost().getHostAddress());
 				outstream.writeInt(UDP_thread.ds.getLocalPort());
 				outstream.writeInt(id++);
+				outstream.writeInt(mapID);
+				outstream.writeInt(mapImageID);
 
 				// test list
 				System.out.println(list);
@@ -229,5 +245,15 @@ public class Server {
 			this.UDP_PORT = UDP_PORT;
 			this.id = id;
 		}
+	}
+	
+	private int randomMapID() {
+		int r = (int)(Math.random()*3);
+		return r;
+	}
+	
+	private int randomMapImageID() {
+		int r = (int)(Math.random()*1);
+		return r;
 	}
 }

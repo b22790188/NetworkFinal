@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 
 import Msg.*;
@@ -31,7 +33,8 @@ public class StickMan implements Runnable {
 	private boolean up = false;
 	private boolean down = false;
 	private boolean jumping = false;
-	private Map map = new Map();
+	private Map map;
+	private List<StickMan> StickManSet;
 	
 	//added by guo
 	private boolean live = true;
@@ -44,6 +47,8 @@ public class StickMan implements Runnable {
 	 */
 	public StickMan(GameFrame gf,int initialX,int initialY) throws IOException {
 		this.gf = gf;
+		StickManSet = this.gf.getStickManSet();
+		this.map = gf.map;
 		this.setStickManX(initialX);
 		this.setStickManY(initialY);
 		this.setSpeedX(regularSpeedX);
@@ -51,6 +56,12 @@ public class StickMan implements Runnable {
 		this.gravity();
 		(new Thread(this)).start();
 	}
+	/*
+	 * 
+	public setMap(int r1, int r2) {
+		gf.setMap(r1, r2);
+	}
+	 */
 
 	public Image getStickMan() {
 		return this.stickMan;
@@ -180,9 +191,9 @@ public class StickMan implements Runnable {
 	public void jump() {
 		this.jumping = true;
 
-		for(int i = 0; i < 32; ++i) {
+		for(int i = 0; i < 64; ++i) {
 			if (this.hit("up")) {
-				this.speedY = 0;
+				break;
 			}
 
 			this.y -= this.speedY;
@@ -205,9 +216,9 @@ public class StickMan implements Runnable {
 	}
 
 	public boolean hit(String direction) {
-		Rectangle stickManRec = new Rectangle(this.x, this.y, 32, 32);
+		Rectangle stickManRec = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
 
-		for(int i = 0; i < this.map.getTileNum(); ++i) {
+		for(int i = 0; i < gf.map.getTileNum(); ++i) {
 			Rectangle object = null;
 			int objectX = (Integer)this.map.mapList.map1_barrier[0][i].get(0);
 			int objectY = (Integer)this.map.mapList.map1_barrier[0][i].get(1);
@@ -227,6 +238,30 @@ public class StickMan implements Runnable {
 				return true;
 			}
 		}
+		
+		for(int i = 0; i < StickManSet.size(); i++) {
+			Rectangle object = null;
+			if(StickManSet.get(i).getID() != gf.getClientID()) {
+				int objectX = StickManSet.get(i).getStickManX();
+				int objectY = StickManSet.get(i).getStickManY();
+				if (direction.equals("left")) {
+					object = new Rectangle(objectX + 3, objectY, 32, 32);
+				} else if (direction.equals("right")) {
+					object = new Rectangle(objectX - 3, objectY, 32, 32);
+				} else if (direction.equals("up")) {
+					object = new Rectangle(objectX, objectY + 2, 32, 32);
+				} else if (direction.equals("down")) {
+					object = new Rectangle(objectX, objectY - 1, 32, 32);
+				}
+
+				if (stickManRec.intersects(object)) {
+//					System.out.println(objectX + " " + objectY);
+//					System.out.println(this.x + " " + this.y);
+					return true;
+				}
+			}
+			
+		}
 
 		return false;
 	}
@@ -237,8 +272,11 @@ public class StickMan implements Runnable {
 				while(true) {
 					if (!jumping && !hit("down")) {
 						y += StickMan.this.speedY;
-						
+						Stickman_Move_Msg msg = new Stickman_Move_Msg(id,x,y);
+						gf.getNetClient().send(msg);
 					}
+					
+					if(y>GameFrame.HEIGHT) blood = 0;
 
 					try {
 						Thread.sleep(7L);
