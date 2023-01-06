@@ -202,7 +202,7 @@ public class StickMan implements Runnable {
 	public void jump() {
 		this.jumping = true;
 
-		for(int i = 0; i < 64; ++i) {
+		for(int i = 0; i < 96; ++i) {
 			if (this.hit("up")) {
 				break;
 			}

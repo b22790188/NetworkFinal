@@ -16,8 +16,9 @@ public class Server {
 	public static int id = 100;  //new
 	private static final int TCP_PORT = 10000;
 	private static final int Disconnect_Port = 10001;
+	private static final int UDP_PORT = 10002;
 	private static final int BUFSIZE = 4096;
-	private List<Client_SInfo> list = new ArrayList<Client_SInfo>();
+	private final List<Client_SInfo> list = new ArrayList<Client_SInfo>();
 	private int mapID;
 	private int mapImageID;
 
@@ -44,6 +45,10 @@ public class Server {
 		DisconnectThread dis_th = new DisconnectThread();
 		new Thread(dis_th).start();
 		
+		UDPThread UDP_thread = new UDPThread();
+		new Thread(UDP_thread).start();
+		
+		
 		while (true) {
 			Socket s = null;
 			try {
@@ -51,8 +56,6 @@ public class Server {
 				s = ss.accept();
 				System.out.println("connected from client " + s.getInetAddress().getHostAddress());
 
-				UDPThread UDP_thread = new UDPThread();
-				new Thread(UDP_thread).start();
 				
 				System.out.println("Create UDP socket for this Client");
 
@@ -70,9 +73,9 @@ public class Server {
 					mapID = randomMapID();
 					mapImageID =  randomMapImageID();
 				}
-				System.out.println(mapID);
-				System.out.println(mapImageID);
-				System.out.println(list.size());
+//				System.out.println(mapID);
+//				System.out.println(mapImageID);
+//				System.out.println(list.size());
 				
 				/*
 				 * Read Client side ip and UDP_port from instream, and add client info to client
@@ -88,7 +91,8 @@ public class Server {
 				 * Write Server side ip, UDP_port, id to Client side.
 				 */
 				outstream.writeUTF(InetAddress.getLocalHost().getHostAddress());
-				outstream.writeInt(UDP_thread.ds.getLocalPort());
+				outstream.writeInt(UDP_PORT);
+//				outstream.writeInt(UDP_thread.ds.getLocalPort());
 				outstream.writeInt(id++);
 				outstream.writeInt(mapID);
 				outstream.writeInt(mapImageID);
@@ -132,7 +136,10 @@ public class Server {
 				 * When object is created, create a UDP socket for transmission, set UDP_Port
 				 * for the object, and then we can return port number to Client.
 				 */
-				this.ds = new DatagramSocket();
+				
+				this.ds = new DatagramSocket(UDP_PORT);
+				
+//				this.ds = new DatagramSocket();
 				
 				System.out.println(ds.getLocalPort());
 			} catch (IOException ioe) {
@@ -156,7 +163,7 @@ public class Server {
 				 */
 				try {
 					ds.receive(d_packet); 
-					System.out.println("packet received!");
+//					System.out.println("packet received!");
 					
 				} catch (IOException ioe) {
 					ioe.printStackTrace();
@@ -171,11 +178,11 @@ public class Server {
 						System.out.println(str);
 						
 						for (Client_SInfo c : list) {
-							d_packet.setSocketAddress(new InetSocketAddress(c.ip, c.UDP_PORT));
-							ds.send(d_packet);
-							
-							System.out.println("packet send!");//test
+							d_packet.setSocketAddress(new InetSocketAddress("192.168.1.255", c.UDP_PORT));
+							ds.send(d_packet);							
 						}
+						 
+//						System.out.println("packet send!");//test
 
 					} catch (IOException ioe) {
 						ioe.printStackTrace();

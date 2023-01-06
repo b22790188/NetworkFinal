@@ -93,6 +93,7 @@ public class GameFrame extends JFrame {
 						/*
 						 * 關閉音樂
 						 */
+						
 						close.stop();
 						/*
 						 * 送出Disconnect訊息，讓Server端關閉連線。
